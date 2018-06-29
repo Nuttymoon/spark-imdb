@@ -163,26 +163,6 @@ object HiveImport {
         .otherwise(col("original")))
       .select("video_id", "title", "title_number", "region", "language", "types", "attributes", "original")
 
-      // Group similar titles
-      .withColumn("original", col("original").cast(IntegerType))
-      .groupBy("video_id", "title")
-      .agg(first("title_number").as("title_number"),
-        concat_ws(",", collect_list("region")).as("regions"),
-        concat_ws(",", collect_list("language")).as("language"),
-        concat_ws(",", collect_list("types")).as("types"),
-        concat_ws(",", collect_list("attributes")).as("attributes"),
-        sum("original").as("original"))
-      .withColumn("original", col("original").cast(BooleanType))
-      .withColumn("regions", when(col("regions") === "", null)
-        .otherwise(col("regions")))
-      .withColumn("language", when(col("language") === "", null)
-        .otherwise(col("language")))
-      .withColumn("types", when(col("types") === "", null)
-        .otherwise(col("types")))
-      .withColumn("attributes", when(col("attributes") === "", null)
-        .otherwise(col("attributes")))
-      .orderBy("video_id")
-
     // Create table imdb.videos
     sql("CREATE TABLE IF NOT EXISTS " +
       s"$dbName.videos(id STRING, primary_title STRING, original_title STRING, adult BOOLEAN, " +
@@ -192,16 +172,17 @@ object HiveImport {
     sql("CREATE TABLE IF NOT EXISTS " +
       s"$dbName.titles(video_id STRING, title STRING, title_number INT, " +
       "language STRING, types STRING, attributes STRING, original BOOLEAN) " +
-      "PARTITIONED BY(regions STRING)")
+      "PARTITIONED BY(region STRING)")
 
     // Write to Hive
     videos
       .write
       .mode(SaveMode.Overwrite)
       .saveAsTable("imdb.videos")
+
     correctedTitles
       .write
-      .partitionBy("regions")
+      .partitionBy("region")
       .mode(SaveMode.Overwrite)
       .saveAsTable("imdb.titles")
   }
