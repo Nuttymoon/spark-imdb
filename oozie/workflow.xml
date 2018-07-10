@@ -3,8 +3,8 @@
     <start to="Hive-import"/>
     <action name="Hive-import">
         <spark xmlns="uri:oozie:spark-action:0.1">
-            <job-tracker>master01.sparkcl.local:8050</job-tracker>
-            <name-node>hdfs://nnsparkcllocal</name-node>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
             <master>yarn</master>
             <mode>cluster</mode>
             <name>TSV to Hive</name>
