@@ -10,6 +10,9 @@
             <name>TSV to Hive</name>
             <class>tsvtohive.HiveImport</class>
             <jar>IMDb/target/scala-2.11/imdb_2.11-0.1.jar</jar>
+            <spark-opts>--conf "spark.yarn.historyServer.address=http://edge.sparkcl.local:18088" 
+            --conf "spark.eventLog.dir=hdfs://nnsparkcllocal:8020/user/spark/applicationHistory" 
+            --conf "spark.eventLog.enabled=true"</spark-opts>
         </spark>
     </action>
 </workflow-app>
