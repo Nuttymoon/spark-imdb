@@ -1,6 +1,6 @@
 <workflow-app name="Launch-with-Oozie" 
     xmlns="uri:oozie:workflow:0.1">
-    <start to="Hive-import" />
+    <start to="Hive-import"/>
     <action name="Hive-import">
         <spark xmlns="uri:oozie:spark-action:0.1">
             <job-tracker>master01.sparkcl.local:8050</job-tracker>
@@ -14,5 +14,11 @@
             --conf "spark.eventLog.dir=hdfs://nnsparkcllocal:8020/user/spark/applicationHistory" 
             --conf "spark.eventLog.enabled=true"</spark-opts>
         </spark>
+        <ok to="end"/>
+        <error to="fail"/>
     </action>
+    <kill name="fail">
+        <message>Spark job failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
 </workflow-app>
