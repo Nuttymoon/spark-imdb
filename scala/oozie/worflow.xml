@@ -1,0 +1,15 @@
+<workflow-app name="Launch-with-Oozie" 
+    xmlns="uri:oozie:workflow:0.1">
+    <start to="Hive-import" />
+    <action name="Hive-import">
+        <spark xmlns="uri:oozie:spark-action:0.1">
+            <job-tracker>master01.sparkcl.local:8050</job-tracker>
+            <name-node>hdfs://nnsparkcllocal</name-node>
+            <master>yarn</master>
+            <mode>cluster</mode>
+            <name>TSV to Hive</name>
+            <class>tsvtohive.HiveImport</class>
+            <jar>IMDb/target/scala-2.11/imdb_2.11-0.1.jar</jar>
+        </spark>
+    </action>
+</workflow-app>

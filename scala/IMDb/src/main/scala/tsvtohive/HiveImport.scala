@@ -170,10 +170,8 @@ object HiveImport {
 
     // Create table imdb.titles
     sql("CREATE TABLE IF NOT EXISTS " +
-      s"$dbName.titles(video_id STRING, title STRING, title_number INT, " +
-      "language STRING, types STRING, attributes STRING, original BOOLEAN) " +
-      "PARTITIONED BY(region STRING)")
-
+      s"$dbName.titles(video_id STRING, title STRING, title_number INT, region String, " +
+      "language STRING, types STRING, attributes STRING, original BOOLEAN)")
     // Write to Hive
     videos
       .write
