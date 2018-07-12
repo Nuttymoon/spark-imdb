@@ -5,8 +5,7 @@
         <spark xmlns="uri:oozie:spark-action:0.1">
             <job-tracker>${jobTracker}</job-tracker>
             <name-node>${nameNode}</name-node>
-            <master>yarn</master>
-            <mode>cluster</mode>
+            <master>yarn-cluster</master>
             <name>TSV to Hive</name>
             <class>tsvtohive.HiveImport</class>
             <jar>/user/oozie/spark-imdb/scala/IMDb/target/scala-2.11/imdb_2.11-0.1.jar</jar>
